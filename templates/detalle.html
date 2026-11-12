@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Consultar estudiante</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+<main class="contenedor">
+    <header class="encabezado">
+        <div>
+            <p class="sobrelinea">Administración académica</p>
+            <h1>Detalle del estudiante</h1>
+            <p class="subtitulo">Consulta la información completa de este registro.</p>
+        </div>
+    </header>
+    <section class="panel panel-detalle">
+        <dl class="detalle-grid">
+            <div><dt>ID del registro</dt><dd>{{ estudiante.id }}</dd></div>
+            <div><dt>Número de identificación</dt><dd>{{ estudiante.identificacion }}</dd></div>
+            <div><dt>Nombre</dt><dd>{{ estudiante.nombre }}</dd></div>
+            <div><dt>Apellido</dt><dd>{{ estudiante.apellido }}</dd></div>
+            <div><dt>Correo electrónico</dt><dd>{{ estudiante.correo }}</dd></div>
+            <div><dt>Programa académico</dt><dd>{{ estudiante.programa }}</dd></div>
+        </dl>
+        <div class="botones-formulario botones-detalle">
+            <a class="boton enlace-boton boton-principal" href="{{ url_for('editar', id=estudiante.id) }}">Editar estudiante</a>
+            <a class="boton enlace-boton boton-secundario" href="{{ url_for('index') }}">Volver al listado</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

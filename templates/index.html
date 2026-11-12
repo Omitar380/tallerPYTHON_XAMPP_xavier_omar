@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CRUD Estudiantes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+<main class="contenedor">
+    <header class="encabezado">
+        <div>
+            <p class="sobrelinea">Administración académica</p>
+            <h1>Gestión de estudiantes</h1>
+            <p class="subtitulo">Consulta y administra los estudiantes registrados.</p>
+        </div>
+        <a class="boton enlace-boton boton-principal" href="{{ url_for('crear') }}">+ Registrar estudiante</a>
+    </header>
+
+    {% with mensajes = get_flashed_messages(with_categories=true) %}
+        {% if mensajes %}
+        <div class="mensajes" role="status" aria-live="polite">
+            {% for categoria, mensaje in mensajes %}
+            <p class="mensaje mensaje-{{ categoria }}">{{ mensaje }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+
+    <section class="panel" aria-labelledby="titulo-listado">
+        <div class="panel-cabecera">
+            <h2 id="titulo-listado">Listado de estudiantes</h2>
+            <span class="contador">{{ estudiantes|length }} estudiante(s)</span>
+        </div>
+        <form class="busqueda" method="GET" action="{{ url_for('index') }}">
+            <label class="sr-only" for="busqueda">Buscar por nombre o apellido</label>
+            <input id="busqueda" type="search" name="busqueda" value="{{ busqueda }}"
+                   placeholder="Buscar por nombre o apellido">
+            <button class="boton boton-principal" type="submit">Buscar</button>
+            {% if busqueda %}
+            <a class="boton enlace-boton boton-secundario" href="{{ url_for('index') }}">Limpiar</a>
+            {% endif %}
+        </form>
+        {% if estudiantes %}
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Identificación</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Correo</th>
+                        <th>Programa</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for e in estudiantes %}
+                    <tr>
+                        <td><a class="enlace-detalle" href="{{ url_for('consultar_estudiante', id=e.id) }}">{{ e.id }}</a></td>
+                        <td>{{ e.identificacion }}</td>
+                        <td>{{ e.nombre }}</td>
+                        <td>{{ e.apellido }}</td>
+                        <td>{{ e.correo }}</td>
+                        <td>{{ e.programa }}</td>
+                        <td>
+                            <div class="acciones">
+                                <a class="boton enlace-boton boton-secundario" href="{{ url_for('editar', id=e.id) }}">Editar</a>
+                                <form action="{{ url_for('eliminar', id=e.id) }}" method="POST"
+                                      onsubmit="return confirm('¿Desea eliminar este estudiante?');">
+                                    <button class="boton boton-peligro" type="submit">Eliminar</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="estado-vacio">
+            {% if busqueda %}
+            No se encontraron estudiantes que coincidan con “{{ busqueda }}”.
+            {% else %}
+            Aún no hay estudiantes registrados. Usa “Registrar estudiante” para agregar el primero.
+            {% endif %}
+        </p>
+        {% endif %}
+    </section>
+</main>
+</body>
+</html>

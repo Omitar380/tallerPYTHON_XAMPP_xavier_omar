@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registrar estudiante</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+<main class="contenedor">
+    <header class="encabezado">
+        <div>
+            <p class="sobrelinea">Administración académica</p>
+            <h1>Registrar estudiante</h1>
+            <p class="subtitulo">Completa la información para agregar un nuevo registro.</p>
+        </div>
+    </header>
+    {% with mensajes = get_flashed_messages(with_categories=true) %}
+        {% if mensajes %}
+        <div class="mensajes" role="alert">
+            {% for categoria, mensaje in mensajes %}
+            <p class="mensaje mensaje-{{ categoria }}">{{ mensaje }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+    <section class="panel">
+        <form class="formulario" method="POST">
+            <div class="campo">
+                <label for="identificacion">Número de identificación</label>
+                <input id="identificacion" type="text" name="identificacion"
+                       value="{{ datos.identificacion }}" maxlength="30" autocomplete="off" required>
+            </div>
+            <div class="campo">
+                <label for="nombre">Nombre</label>
+                <input id="nombre" type="text" name="nombre" value="{{ datos.nombre }}" maxlength="100" autocomplete="given-name" required>
+            </div>
+            <div class="campo">
+                <label for="apellido">Apellido</label>
+                <input id="apellido" type="text" name="apellido" value="{{ datos.apellido }}" maxlength="100" autocomplete="family-name" required>
+            </div>
+            <div class="campo">
+                <label for="correo">Correo electrónico</label>
+                <input id="correo" type="email" name="correo" value="{{ datos.correo }}" maxlength="100" autocomplete="email" required>
+            </div>
+            <div class="campo">
+                <label for="programa">Programa académico</label>
+                <input id="programa" type="text" name="programa" value="{{ datos.programa }}" maxlength="100" required>
+            </div>
+            <div class="botones-formulario">
+                <button class="boton boton-principal" type="submit">Guardar estudiante</button>
+                <a class="boton enlace-boton boton-secundario" href="{{ url_for('index') }}">Cancelar</a>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>
